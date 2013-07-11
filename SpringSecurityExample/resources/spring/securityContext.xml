@@ -9,10 +9,7 @@
 						http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 
-	<beans:bean id="jspResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/jsp/" />
-		<beans:property name="suffix" value=".jsp" />
-	</beans:bean>
+	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
 	
 	<http use-expressions="true">
 		<intercept-url pattern="/index.jsp" access="permitAll" />
@@ -20,6 +17,7 @@
 		<intercept-url pattern="/person/**" access="hasRole('user')" />
 		<!-- <intercept-url pattern="/listAccounts.html" access="isAuthenticated()" />
 		<intercept-url pattern="/post.html" access="hasAnyRole('supervisor','teller')" /> -->
+		<intercept-url pattern="/" access="permitAll" />
 		<intercept-url pattern="/**" access="denyAll" />
 		<form-login />
 		<logout />
@@ -27,11 +25,12 @@
     
     <authentication-manager>
 		<authentication-provider>
+			<password-encoder ref="passwordEncoder" />
 			<user-service>
-				<user name="anil" password="anil" authorities="supervisor, teller, user" />
-				<user name="teller1" password="teller1" authorities="teller, user" />
-				<user name="scott" password="wombat" authorities="user" />
-				<user name="user1" password="user1" authorities="user" />
+				<user name="anil" password="a15428a3795a524fb87e0deb8a5f006f4ba771d9ebc71ab05b2fd2302968c8c0b6d9318b46253386" authorities="supervisor, teller, user" />
+				<user name="teller1" password="3076ea41ad667c757063c645d8cec207b777ce43db3f2fa8282b56ad841986a1670cd755edf77daf" authorities="teller, user" />
+				<user name="scott" password="bac3435485572c3186cd5ea0ac2a04d80c3ea0bd22e2096180fb4ebcf5335dda617c2d631f0d8ac3" authorities="user" />
+				<user name="user1" password="70155a57dd9c984039d0f1fc55e0162854384c57e0274d7d7bfcd6ed3274db5ca5ed38c6c6a8cca7" authorities="user" />
 			</user-service>
 		</authentication-provider>
 	</authentication-manager>
