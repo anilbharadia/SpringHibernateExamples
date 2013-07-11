@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+  						http://www.springframework.org/schema/security 
+						http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+
+	<beans:bean id="jspResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/jsp/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<http use-expressions="true">
+		<intercept-url pattern="/index.jsp" access="permitAll" />
+		<intercept-url pattern="/person/add/**" access="hasRole('supervisor')" />
+		<intercept-url pattern="/person/**" access="hasRole('user')" />
+		<!-- <intercept-url pattern="/listAccounts.html" access="isAuthenticated()" />
+		<intercept-url pattern="/post.html" access="hasAnyRole('supervisor','teller')" /> -->
+		<intercept-url pattern="/**" access="denyAll" />
+		<form-login />
+		<logout />
+	</http>
+    
+    <authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="anil" password="anil" authorities="supervisor, teller, user" />
+				<user name="teller1" password="teller1" authorities="teller, user" />
+				<user name="scott" password="wombat" authorities="user" />
+				<user name="user1" password="user1" authorities="user" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
+</beans:beans>
