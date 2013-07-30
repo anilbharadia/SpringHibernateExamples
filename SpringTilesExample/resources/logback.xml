@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+	<contextName>RW</contextName>
+	
+	<property name="ENV_TYPE" value="DEV" /> <!-- Development Environment -->
+	<!-- <property name="ENV_TYPE" value="PRO" /> --> <!-- Production Environment -->
+	
+	
+	<!-- <timestamp key="timestamp" datePattern="yyyyMMdd'T'HHmmss"/> 20120904T202903 -->
+	<timestamp key="timestamp" datePattern="dd-MMM-yyyy_HH-mm-ss" timeReference="contextBirth" />
+	
+
+	<!-- 
+		conversionWords :
+		
+		%t = %thread			= Outputs the name of the thread that generated the logging event. 
+		%c = %lo = %logger		= Outputs the name of the logger at the origin of the logging event
+		%d = %date				= Used to output the date of the logging event
+		%m = %msg = %message	= Outputs the application-supplied message associated with the logging event. 
+		%n 						= Outputs the platform dependent line separator character or characters
+		%p = %le = %level 		= Outputs the level of the logging event.
+		%r = %relative			= Outputs the number of milliseconds elapsed since the start of the application until the creation of the logging event. 
+		
+		for more info about conversionWord in pattern layout, visit : http://logback.qos.ch/manual/layouts.html#conversionWord
+	-->
+
+	<property name="LOG_DIR" value="D:/RW1/LOG" />
+
+
+
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/RnD.${timestamp}.log</file>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${LOG_DIR}/RnD.${timestamp}.%i.log.zip</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>10</maxIndex>
+		</rollingPolicy>
+		
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>10MB</maxFileSize>
+		</triggeringPolicy>
+		
+		<encoder>
+			<!-- <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern> -->
+			<pattern>%date{HH:mm:ss.SSSS} [%thread] %-5level %logger{36} - %message%n%xException</pattern>
+		</encoder>
+	</appender>
+
+
+<!-- 
+	<appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+		<smtpHost>surya.ismnet.com</smtpHost>
+		<to>abharadia@ismnet.com</to>
+		<to>nbhambhani@ismnet.com</to> additional destinations are possible
+		<from>noreply@logback.rcm.com</from>
+		
+		<discriminator class="ch.qos.logback.classic.sift.MDCBasedDiscriminator">
+			<key>req.remoteHost</key> visit http://logback.qos.ch/manual/mdc.html#mis for different key values
+			<defaultValue>default</defaultValue>
+		</discriminator>
+		
+		
+		<subject>RnD-Error: ${HOSTNAME} %X{req.remoteHost} %logger - %m</subject>
+		<subject>RnD-Error: ${HOSTNAME} %logger - %m</subject>
+		
+		<layout class="ch.qos.logback.classic.PatternLayout">
+		<layout class="ch.qos.logback.classic.html.HTMLLayout">
+			<pattern>%date%thread%level%logger%message</pattern>
+		</layout>
+		<cyclicBufferTracker class="ch.qos.logback.core.spi.CyclicBufferTrackerImpl">
+			<bufferSize>20</bufferSize> set number of log entry to send per email
+    </cyclicBufferTracker>
+		
+	</appender>
+	<root>
+		<appender-ref ref="EMAIL" />
+	</root>
+-->
+
+
+	<if condition='property("ENV_TYPE").equals("DEV")'>
+		<then>
+			<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+				<encoder>
+					<!-- <pattern>%d{HH:mm:ss.SSSS} %contextName [%thread] %t %-5level %logger{36} - %msg%n</pattern> -->
+					<pattern>%d{HH:mm:ss.SSSS} [%thread] %-5level %logger{36} - %msg%n%xException</pattern>
+				</encoder>
+			</appender>
+			<root>
+				<appender-ref ref="STDOUT" />
+			</root>
+		</then>
+	</if>
+	
+
+    <!--
+    This is a working DB Appender
+    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+            <driverClass>com.microsoft.sqlserver.jdbc.SQLServerDriver</driverClass>
+            <url><![CDATA[jdbc:sqlserver://OMDDEV1\SQLSRV;DatabaseName=Omnimdv12;user=OmniPMS;password=0mn!PMS@#DB]]></url>
+            <user>OmniPMS</user>
+            <password><![CDATA[0mn!PMS@#DB]]></password>
+        </connectionSource>
+    </appender>
+    -->
+    
+    
+    <!-- 
+    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+            <dataSource class="org.apache.commons.dbcp.BasicDataSource">
+        
+				<param name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+			    <param name="url" value="jdbc:sqlserver://hostname;DatabaseName=dbname;user=anil;password=secret"/>
+			    <param name="username" value="anil"/>
+			    <param name="password" value="secret"/>
+				       
+				<param name="maxIdle" value="50" />
+			    <param name="maxActive" value="50" />
+			    <param name="initialSize" value="25" />
+	            
+            </dataSource>
+        </connectionSource>
+    </appender>
+    
+    
+    <root level="debug">
+        <appender-ref ref="DB"></appender-ref>
+    </root>
+
+	 -->
+	
+	<logger name="org.apache.tiles" level="debug" />
+	
+	<root level="debug">
+		<appender-ref ref="FILE"></appender-ref>
+	</root>
+
+</configuration>
