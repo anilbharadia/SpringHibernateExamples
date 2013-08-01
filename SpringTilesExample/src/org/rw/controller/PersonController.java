@@ -10,7 +10,13 @@ public class PersonController {
 	
 	@RequestMapping(value="/view")
 	public String view() {
-		return "personView";
+		return "person/personView";
+	}
+	
+	
+	@RequestMapping(value="/add")
+	public String add() {
+		return "person/personAdd";
 	}
 	
 }

@@ -7,5 +7,11 @@
 </head>
 <body>
 	Hi This is index.jsp
+	<br>
+	<a href="person/view">View Person</a>
+	<br>
+	<a href="person/add">Add Person</a>
+	
+	
 </body>
 </html>

@@ -15,12 +15,21 @@
 	</definition>
 	
 	
-	<definition name="personView" extends="baseLayout">
+	<!-- <definition name="personView" extends="baseLayout">
 		<put-attribute name="title" value="Person View" type="string" />
 		<put-attribute name="content" value="/WEB-INF/jsp/personView.jsp" />
 	</definition>
 	
+	<definition name="personAdd" extends="baseLayout">
+		<put-attribute name="title" value="Add new person" type="string" />
+		<put-attribute name="content" value="/WEB-INF/jsp/personAdd.jsp" />
+	</definition>
 	
+	 -->
+	 <definition name="person/*" extends="baseLayout">
+		<put-attribute name="title" value="Add new person" type="string" />
+		<put-attribute name="content" value="/WEB-INF/jsp/{1}.jsp" />
+	</definition>
 	
 	
 
